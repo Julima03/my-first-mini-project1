@@ -1,7 +1,8 @@
+<!doctype html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Icecreamshop demo</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -49,48 +50,31 @@
       }
     </style>
     <img src="./assets/scoop.jpg" width="400px" text-align="center" />
-    <h1>🍦Scoop Gelato🍦</h1>
+    <h1>🍦SCOOP GELATO🍦</h1>
     <form onsubmit="icecreamshopSubmit(event)">
-       <nav class="navbar navbar-expand-lg" style="background-color: #ffdd57;"></nav>
-      <h1 class="text-muted"> Menu </h1>
-      <p class="fw-bold">Fresh scoops made daily</p>
+      <nav class="navbar navbar-expand-lg" style="background-color: #ffdd57;"></nav>
+      <div style="font-size: 1.5rem;">
+        <h1 class="text-muted"> Menu </h1>
+        <ul>
+          <!-- Menu Items -->
+          <h5 style="font-size: 2.0rem; font-weight:normal;">💲 Price per scoop: $2.50</h5>
+          <li>🍓 Strawberry $3.50</li>
 
-      <!-- Menu Items -->
-      <h5 class="mt-3 text-success fw-bold">💲 Price per scoop: $2.50</h5>
-      <div class="row justify-content-center mt-4">
-        <div class="col-md-6">
-          <ul class="list-group fs-5 shadow-lg rounded-3">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-          🍓 Strawberry 
-          <span class="badge bg-primary rounded-pill">$3.50</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          🍫 Chocolate Fudge
-          <span class="badge bg-primary rounded-pill">$4.00</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          🍦 Classic Vanilla
-          <span class="badge bg-primary rounded-pill">$3.00</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          🍪 Cookies & Cream
-          <span class="badge bg-primary rounded-pill">$4.50</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          🍋 Lemon Sorbet
-          <span class="badge bg-primary rounded-pill">$3.75</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          🍨 Sundae Special
-          <span class="badge bg-success rounded-pill">$5.50</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          🍹 Milkshake (Vanilla/Chocolate/Strawberry)
-          <span class="badge bg-info rounded-pill">$4.75</span>
-            </li>
-          </ul>
-        </div>
+          <li>🍫 Chocolate Fudge $4.00</li>
+
+          <li>🍦 Classic Vanilla $3.00</li>
+
+          <li>🍪 Cookies & Cream $4.50</li>
+
+          <li>🍋 Lemon Sorbet $3.75</li>
+
+          <li>🍨 Sundae Special $5.50</li>
+
+          <li>🍹 Milkshake (Vanilla/Chocolate/Strawberry) $4.75</li>
+        </ul>
       </div>
+  </div>
+  </div>
   </div>
   <div class="mb-3">
     <label for="icecreamshopTitle" class="form-label">Title</label>
@@ -103,28 +87,7 @@
   <button type="submit" class="btn btn-primary">Submit</button>
   </form>
   <div class="row" id="icecreamshop"></div>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">
-            Modal title
-          </h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">...</div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Close
-          </button>
-          <button type="button" class="btn btn-primary">
-            Save changes
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"></script>
@@ -164,7 +127,7 @@
 
       const isCompletedFunction = (event) => {
         const isCompleted = event.target.checked;
-        fetch(`/api/icecreamshop/${id}`, {
+        fetch(`/api/icecreamshops/${id}`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -218,7 +181,7 @@
     }
 
     async function getInitData() {
-      const response = await fetch("/api/icecreamshop");
+      const response = await fetch("/api/icecreamshops");
       const icecreamshop = await response.json();
       return icecreamshop;
     }
@@ -230,11 +193,10 @@
     }
 
     displayInitIcecreamshop();
-    const myModal = new bootstrap.Modal(
-      document.getElementById("exampleModal")
-    );
 
-    myModal.show();
+    document.getElementById("exampleModal")
+      ;
+
   </script>
 </body>
 

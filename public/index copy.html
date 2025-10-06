@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Icecreamshop demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+  <style>
+    body {
+      background-color: #d0f0c0;
+    }
+
+    .icecreamshopCompleted {
+      text-decoration: line-through;
+    }
+  </style>
+</head>
+<style>
+  .icecreamshopCompleted {
+    text-decoration: line-through;
+  }
+</style>
+
+<body>
+  <template id="categoryTemplate"></template>
+  <template id="icecreamshopTemplate">
+    <div class="card" style="width: 18rem">
+      <div class="card-body">
+        <h5 id="icecreamshopTitle"></h5>
+        <p id="iceCreamShopDesc"></p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="isCompleted" />
+          <label class="form-check-label">Is completed</label>
+        </div>
+        <button id="iceCreamShopDel" class="btn btn-danger">Del</button>
+        <button id="iceCreamShopUpdate" class="btn btn-primary">Update</button>
+      </div>
+    </div>
+  </template>
+  <div class="container">
+    <style>
+      .container {
+        text-align: center;
+      }
+
+      .container img {
+        display: inline-block;
+      }
+    </style>
+    <img src="./assets/scoop.jpg" width="400px" text-align="center" />
+    <h1>🍦SCOOP GELATO🍦</h1>
+    <form onsubmit="icecreamshopSubmit(event)">
+      <nav class="navbar navbar-expand-lg" style="background-color: #ffdd57;"></nav>
+      <div style="font-size: 1.5rem;">
+        <h1 class="text-muted"> Menu </h1>
+        <ul id="menucontainer"> 
+          <!-- Menu Items -->
+          <h5 style="font-size: 2.0rem; font-weight:normal;">💲 Price per scoop: $2.50</h5>
+          <li>🍓 Strawberry $3.50</li>
+
+          <li>🍫 Chocolate Fudge $4.00</li>
+
+          <li>🍦 Classic Vanilla $3.00</li>
+
+          <li>🍪 Cookies & Cream $4.50</li>
+
+          <li>🍋 Lemon Sorbet $3.75</li>
+
+          <li>🍨 Sundae Special $5.50</li>
+
+          <li>🍹 Milkshake (Vanilla/Chocolate/Strawberry) $4.75</li>
+        </ul>
+      </div>
+  </div>
+  </div>
+  </div>
+  <div class="mb-3">
+    <label for="icecreamshop" class="form-label">Order</label>
+    <input type="text" class="form-control" id="icecreamshop" />
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <div class="row" id="icecreamshopsContainer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+  <script>
+    let icecreamshops = [];
+
+    function displayIcecreamshop({ id, title, desc, isCompleted }, index) {
+      const copiedTemplate = document
+        .getElementById("icecreamshopTemplate")
+        .content.cloneNode(true);
+      copiedTemplate.getElementById("icecreamshopTitle").innerText = title;
+      copiedTemplate.getElementById("iceCreamShopDesc").innerText = desc;
+      copiedTemplate.getElementById("isCompleted").checked = isCompleted;
+      if (isCompleted) {
+        copiedTemplate
+          .getElementById("icecreamshopTitle")
+          .classList.add("icecreamshopCompleted");
+        copiedTemplate
+          .getElementById("iceCreamShopDesc")
+          .classList.add("icecreamshopCompleted");
+      }
+
+      copiedTemplate
+        .getElementById("iceCreamShopDel")
+        .addEventListener("click", () => {
+          fetch(`/api/icecreamshops/${id}`, {
+            method: "Delete",
+          })
+            .then((response) => {
+              icecreamshops.splice(index, 1);
+              renderIcecreamshops();
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        });
+
+      const isCompletedFunction = (event) => {
+        const isCompleted = event.target.checked;
+        fetch(`/api/icecreamshops/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "Put",
+          body: JSON.stringify({ title, desc, isCompleted }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            icecreamshops.splice(index, 1, data);
+            renderIcecreamshops();
+          });
+      };
+
+      copiedTemplate
+        .getElementById("isCompleted")
+        .addEventListener("click", isCompletedFunction);
+
+      document.getElementById("icecreamshopContainer").appendChild(copiedTemplate);
+    }
+
+    function renderIcecreamshops() {
+      document.getElementById("icecreamshopsContainer").innerHTML = "";
+      icecreamshops.forEach((icecreamshop, index) => {
+        displayIcecreamshop(icecreamshop, index);
+      });
+    }
+        function renderIcecreammenu(menu) { 
+          console.log("menu", menu);
+ document.getElementById("menucontainer").innerHTML = "";
+      
+ const emojiMap = {
+           "strawberry": "🍓",
+    "chocolate fudge": "🍫",
+    "Classic Vanilla": "🍦",
+    "Cookies & Cream": "🍪",
+    "Lemon Sorbet": "🍋",
+    "Sundae Special": "🍨",
+    "Milkshake": "🍹"
+  };
+      
+      menu.forEach((menuitem) => { const newListItem = document.createElement('li');
+      const emoji = emojiMap[menuitem.flavor] || "🍦";
+newListItem.textContent = `${emoji} ${menuitem.flavor} - ${menuitem.price}`;
+        document.getElementById("menucontainer").appendChild(newListItem);
+      });
+    }
+
+    function icecreamshop(event) {
+      event.preventDefault();
+      //collect info from form
+      const title = document.getElementById("icecreamshopTitle").value;
+      const desc = document.getElementById("icecreamshopDesc").value;
+      // create object with the info
+      const icecreamshop = {
+        title,
+        desc,
+      };
+
+      fetch("/api/icecreamshops", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "Post",
+        body: JSON.stringify(icecreamshop),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          icecreamshop.push(data);
+          renderIcecreamshops();
+        });
+    }
+
+    async function getInitData() {
+      const response = await fetch("/api/icecreamshops");
+      const icecreamshop = await response.json();
+      return icecreamshop;
+    }
+    async function getMenuData() {
+      const response = await fetch("/api/icecreamshopsmenu");
+      const icecreamshopsmenu = await response.json();
+      return icecreamshopsmenu;
+    }
+
+    async function displayInitIcecreamshop() {
+      const initIcecreamshop = await getInitData();
+           const initIcecreamshopsmenu = await getMenuData();
+      icecreamshops = initIcecreamshop;
+      renderIcecreamshops();
+
+        renderIcecreammenu(initIcecreamshopsmenu);
+    }
+
+    displayInitIcecreamshop();
+
+    
+  </script>
+</body>
+
+</html>
+
+<!-- This only inserts menuitem.flavor — it completely ignores the price property and any emojis. -->
+ <!-- So you have both flavor and price, but you’re only displaying flavor. -->
+<!-- //Update your render function to include both flavor and price, plus emojis
+Map emojis in frontend
+
+If your backend doesn’t send emojis, you can map them by flavor name // -->

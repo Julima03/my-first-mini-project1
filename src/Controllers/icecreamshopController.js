@@ -17,7 +17,7 @@ const createIcecreamshop = (icecreamshop) => {
 };
 
 const getIcecreamshops = () => {
-  return getAllIcecreamshopFromService();
+  return getAllIcecreamshopsFromService();
 };
 
 const removeIcecreamshops = (id) => {

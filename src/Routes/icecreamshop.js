@@ -7,7 +7,7 @@ const {
   updateIcecreamshopAction,
 } = require("../Controllers/icecreamshopController");
 
-router.get("/", (req, res) => {
+router.get("/", (req, res) => { 
   res.json(getIcecreamshops());
 });
 
